@@ -1,0 +1,72 @@
+﻿@model PrevisaoTempo.Models.ViewModels.PrevisaoCidadeViewModel
+
+<h2>Clima tempo simples</h2>
+
+<div class="row">
+    <div class="col-6">
+        <div class="card bg-light mb-3">
+            <div class="card-header bg-primary text-white">Cidades mais quentes hoje</div>
+            <div class="card-body">
+                @foreach (var cidade in Model.PrevisoesMaxima)
+                {
+                    <div class="row">
+                        <div class="col-6">
+                            @cidade.Cidade.Nome/@cidade.Cidade.Estado.Uf
+                        </div>
+                        <div class="col-3">
+                            Min @cidade.TemperaturaMinima°C
+                        </div>
+                        <div class="col-3">
+                            Max @cidade.TemperaturaMaxima°C
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card bg-light mb-3">
+            <div class="card-header bg-primary text-white">Cidades mais frias hoje</div>
+            <div class="card-body">
+                @foreach (var cidade in Model.PrevisoesMinima)
+                {
+                    <div class="row">
+                        <div class="col-6">
+                            @cidade.Cidade.Nome/@cidade.Cidade.Estado.Uf
+                        </div>
+                        <div class="col-3">
+                            Min @cidade.TemperaturaMinima°C
+                        </div>
+                        <div class="col-3">
+                            Max @cidade.TemperaturaMaxima°C
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-end">
+    <div class="col-auto">
+        <label class="text-black"><b>Cidade:</b></label>
+        <div class="form-group">
+            <select class="select2 col-auto form-control" name="cidade">
+                <option selected="selected" disabled="disabled">Selecione uma cidade</option>
+                @foreach (var cidade in Model.Cidades)
+                {
+                    <option value="@cidade.Id">@cidade.Nome</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+
+@foreach(var cidade in Model.Cidades)
+{
+    <h2>Clima para o próximo sete dias na cidade @cidade.Nome</h2>
+}
+
+
+@section Scripts{ 
+    <script src="~/js/Home/Index.js"></script>
+}
