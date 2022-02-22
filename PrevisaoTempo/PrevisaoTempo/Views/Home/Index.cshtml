@@ -50,23 +50,91 @@
     <div class="col-auto">
         <label class="text-black"><b>Cidade:</b></label>
         <div class="form-group">
-            <select class="select2 col-auto form-control" name="cidade">
-                <option selected="selected" disabled="disabled">Selecione uma cidade</option>
-                @foreach (var cidade in Model.Cidades)
-                {
-                    <option value="@cidade.Id">@cidade.Nome</option>
-                }
-            </select>
+            <form id="buscarCidadePorNome">
+                <select name="idCidade" id="cidadeSelecionada" class="select2 col-auto form-control">
+                    <option value="">Selecione uma cidade</option>
+                    @foreach (var cidade in Model.Cidades)
+                    {
+                        var selecionado = Model.CidadeEPrevisoes != null && Model.CidadeEPrevisoes.Id == cidade.Id
+                            ? "selected" : null;
+                        <option value="@cidade.Id" selected="@selecionado">@cidade.Nome</option>
+                    }
+                </select>
+            </form>
         </div>
     </div>
 </div>
 
-@foreach(var cidade in Model.Cidades)
+@if (Model.CidadeEPrevisoes != null && Model.CidadeEPrevisoes.PrevisaoClimas.Count > 0)
 {
-    <h2>Clima para o próximo sete dias na cidade @cidade.Nome</h2>
+    <h2>
+        Clima para o próximo sete dias na cidade @Model.CidadeEPrevisoes.Nome
+    </h2>
+
+    <div class="row">
+
+
+        @foreach (var previsao in Model.CidadeEPrevisoes.PrevisaoClimas)
+        {
+
+            var diaSemana = string.Empty;
+
+            switch (previsao.DataPrevisao.DayOfWeek.ToString())
+            {
+                case "Sunday":
+                    diaSemana = "Domingo";
+                    break;
+                case "Monday":
+                    diaSemana = "Segunda-feira";
+                    break;
+                case "Tuesday":
+                    diaSemana = "Terça-feira";
+                    break;
+                case "Wednesday":
+                    diaSemana = "Quarta-feira";
+                    break;
+                case "Thursday":
+                    diaSemana = "Quinta-feira";
+                    break;
+                case "Friday":
+                    diaSemana = "Sexta-feira";
+                    break;
+                case "Saturday":
+                    diaSemana = "Sábado";
+                    break;
+            }
+            <div class="col-auto">
+                <div class="card bg-light">
+                    <div class="card-header bg-primary text-white">@diaSemana</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                @previsao.Clima
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                Mínima: @previsao.TemperaturaMinima°C
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                Máxima: @previsao.TemperaturaMaxima°C
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+}
+else if (Model.Id > 0)
+{
+    <h2>Não há previsões cadastradas para essa cidade</h2>
 }
 
-
-@section Scripts{ 
+@section Scripts{
     <script src="~/js/Home/Index.js"></script>
 }

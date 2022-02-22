@@ -24,5 +24,6 @@ namespace PrevisaoTempo.Repositories
                 .Where(x => x.DataPrevisao == DateTime.Now.Date)
                 .OrderBy(x => x.TemperaturaMinima).Take(quantidadeLinhas).AsNoTracking().ToListAsync();
         }
+
     }
 }
